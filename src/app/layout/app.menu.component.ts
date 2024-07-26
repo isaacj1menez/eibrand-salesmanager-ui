@@ -17,15 +17,15 @@ export class AppMenuComponent implements OnInit {
             {
                 label: 'Home',
                 items: [
-                    { label: 'Dashboard', icon: 'pi pi-fw pi-home', routerLink: ['/'] }
+                    { label: 'Dashboard', icon: 'pi pi-fw pi-home', routerLink: ['/management'] }
                 ]
             },
             {
                 label: 'Productos',
                 items: [
-                    { label: 'Nuevo', icon: 'pi pi-fw pi-plus-circle', routerLink: ['/productos/nuevo'] },
-                    { label: 'Lista', icon: 'pi pi-fw pi-box', routerLink: ['/productos/lista'] },
-                    { label: 'Inventarios Base', icon: 'pi pi-fw pi-server', routerLink: ['/productos/inventario'] },
+                    { label: 'Nuevo', icon: 'pi pi-fw pi-plus-circle', routerLink: ['/management/productos/nuevo'] },
+                    { label: 'Lista', icon: 'pi pi-fw pi-box', routerLink: ['/management/productos/lista'] },
+                    { label: 'Inventarios Base', icon: 'pi pi-fw pi-server', routerLink: ['/management/productos/inventario'] },
                     // { label: 'Categorías', icon: 'pi pi-fw pi-bars', routerLink: ['/productos/categoria'] },
                     // { label: 'Sub Categorías', icon: 'pi pi-fw pi-list', routerLink: ['/productos/subcategoria'] },
                 ]
@@ -33,9 +33,9 @@ export class AppMenuComponent implements OnInit {
             {
                 label: 'Ventas',
                 items: [
-                    { label: 'Nueva', icon: 'pi pi-fw pi-plus-circle', routerLink: ['/ventas/nueva'] },
+                    { label: 'Nueva', icon: 'pi pi-fw pi-plus-circle', routerLink: ['/management/ventas/nueva'] },
                     // { label: 'Transacciones', icon: 'pi pi-cart-plus', routerLink: ['/ventas/transacciones'] },
-                    { label: 'Órdenes', icon: 'pi pi-shopping-cart', routerLink: ['/ventas/ordenes'] }
+                    { label: 'Órdenes', icon: 'pi pi-shopping-cart', routerLink: ['/management/ventas/ordenes'] }
                 ]
             }
             // {

@@ -81,7 +81,7 @@ export class OrdersComponent implements OnInit {
   }
 
   viewSale(sale: resopnseSale) {
-    this.router.navigate(['ventas/editar/', sale._id]);
+    this.router.navigate(['/management/ventas/editar/', sale._id]);
   }
 
   printSale(sale: resopnseSale) {

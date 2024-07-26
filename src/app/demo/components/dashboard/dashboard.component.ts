@@ -36,7 +36,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     viewSale(sale: Sale) {
-        this.router.navigate(['ventas/editar/', sale._id]);
+        this.router.navigate(['/management/ventas/editar/', sale._id]);
     }
 
     getPaymentStatusClass(status: string): string {
