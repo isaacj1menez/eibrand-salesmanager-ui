@@ -75,8 +75,7 @@ export class ListProductComponent implements OnInit {
     } else {
       this.inventories = [];
     }
-
-    console.log(groupedItems);
+        
     this.products.map(product => {
       const category = groupedItems[product.categoriaBase] || 0;
       product.stock = category.stock;

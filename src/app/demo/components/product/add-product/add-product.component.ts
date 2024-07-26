@@ -56,7 +56,7 @@ export class AddProductComponent implements OnInit {
     const categoriesSet = new Set<string>();
 
     this.inventories.forEach(item => {
-      categoriesSet.add(item.categoria);
+      categoriesSet.add(item.categoria.replace(/\s+/g, ''));
     });
 
     const uniqueCategories: StockCategory[] = Array.from(categoriesSet).map(categoria => ({

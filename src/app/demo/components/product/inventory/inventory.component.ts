@@ -41,7 +41,7 @@ export class InventoryComponent implements OnInit {
     { label: 'Contenedores', value: 'taza' },
     { label: 'Playeras', value: 'vaso' },
     { label: 'Sudaderas', value: 'playera' },
-    { label: 'Accesorios', value: 'accesorio' }
+    { label: 'Souvenirs', value: 'souvenir' }
   ]
 
   constructor(private inventoryService: InventoryService, private confirmationService: ConfirmationService) { }

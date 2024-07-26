@@ -8,11 +8,7 @@ import { environment } from 'src/environments/environment';
 export class InventoryService {
   private url = environment.url;
   private apiUrl = `${this.url}/api/inventory`;
-
-  constructor() { 
-    console.log(this.apiUrl);
-  }
-
+  
   async getAllInventories(): Promise<any> {
     try {
       const response = await axios.get(`${this.apiUrl}`);
