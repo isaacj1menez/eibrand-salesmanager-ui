@@ -38,9 +38,9 @@ export class InventoryComponent implements OnInit {
   inventoryId: string;
 
   stockCategories: any[] = [
-    { label: 'Contenedores', value: 'taza' },
-    { label: 'Playeras', value: 'vaso' },
-    { label: 'Sudaderas', value: 'playera' },
+    { label: 'Contenedores', value: 'contenedor' },
+    { label: 'Playeras', value: 'playera' },
+    { label: 'Sudaderas', value: 'sudadera' },
     { label: 'Souvenirs', value: 'souvenir' }
   ]
 
@@ -83,7 +83,7 @@ export class InventoryComponent implements OnInit {
     if (!this.inventory.color || this.inventory.color === '') {
       this.showErrorMessages('El color es requerido');
     }
-    
+
     if (!this.inventory.stock || this.inventory.stock === 0) {
       this.showErrorMessages('El stock debe ser mayor a cero');
     }

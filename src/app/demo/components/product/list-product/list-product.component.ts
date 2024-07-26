@@ -38,10 +38,10 @@ export class ListProductComponent implements OnInit {
   };
 
   stockCategories: any[] = [
-    { label: 'Taza', value: 'taza' },
-    { label: 'Vaso', value: 'vaso' },
-    { label: 'Playera', value: 'playera' },
-    { label: 'Marco', value: 'marco' }
+    { label: 'Contenedores', value: 'contenedor' },
+    { label: 'Playeras', value: 'playera' },
+    { label: 'Sudaderas', value: 'sudadera' },
+    { label: 'Souvenirs', value: 'souvenir' }
   ]
 
   products: Product[];
