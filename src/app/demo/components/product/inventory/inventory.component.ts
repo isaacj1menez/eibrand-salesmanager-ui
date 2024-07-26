@@ -38,10 +38,10 @@ export class InventoryComponent implements OnInit {
   inventoryId: string;
 
   stockCategories: any[] = [
-    { label: 'Contenedores', value: 'contenedor' },
-    { label: 'Playeras', value: 'playera' },
-    { label: 'Sudaderas', value: 'sudadera' },
-    { label: 'Souvenirs', value: 'souvenir' }
+    { label: 'Contenedores', value: 'contenedores' },
+    { label: 'Playeras', value: 'playeras' },
+    { label: 'Sudaderas', value: 'sudaderas' },
+    { label: 'Souvenirs', value: 'souvenirs' }
   ]
 
   constructor(private inventoryService: InventoryService, private confirmationService: ConfirmationService) { }
