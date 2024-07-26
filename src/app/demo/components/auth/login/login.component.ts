@@ -31,7 +31,7 @@ export class LoginComponent {
             const response = await this.authService.login(this.username, this.password);
             if (response.success) {
                 localStorage.setItem('token', response.token); // Guarda el token en localStorage o sessionStorage
-                this.router.navigate(['/']); // Redirige a la página principal
+                this.router.navigate(['/management']); // Redirige a la página principal
             } else {
                 // Maneja el error de autenticación
                 alert(response.message || 'Error al inciar sesión');
