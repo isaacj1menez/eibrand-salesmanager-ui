@@ -1,0 +1,99 @@
+:host {
+    font-family: 'Montserrat', sans-serif;
+    scroll-behavior: smooth;
+}
+
+.landing-wrapper {
+    position: relative;
+}
+
+.menu-wrapper {
+    position: sticky;
+    top: 0;
+    background-color: black;
+    z-index: 1000;
+    padding: 0 1rem;
+    /* Ajusta según sea necesario */
+}
+
+.main-bg {
+    height: 100vh;
+    background-image: url('../../../../assets/demo/images/landing/bg.png');
+    background-size: cover;
+    position: relative;
+}
+
+.responsive-svg {
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+    color: white;
+}
+
+.cta-button {
+    background-color: #F9EF23;
+    color: black;
+    border: none;
+    padding: 20px 30px;
+    font-size: 2rem;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.cta-button:hover {
+    background-color: rgb(224, 211, 27);
+    transform: scale(1.05);
+}
+
+.image {
+    width: 795px;
+    height: 700px;
+    object-fit: cover;
+    transition: transform 0.3s ease-in-out;
+    border-radius: 10px;
+}
+
+.image:hover {
+    transform: scale(1.05);
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+}
+
+.overlay-text {
+    color: white;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.landing-wrapper {
+    position: relative;
+}
+
+.menu-wrapper {
+    position: sticky;
+    top: 0;
+    background-color: black;
+    /* Asegúrate de que el fondo sea el adecuado */
+    z-index: 1000;
+    /* Asegúrate de que el menú esté por encima de otros elementos */
+    padding: 0 1rem;
+    /* Añade padding si es necesario */
+}
+
+.menu-wrapper .py-4 {
+    position: relative;
+    /* Asegúrate de que los elementos dentro también estén bien posicionados */
+}

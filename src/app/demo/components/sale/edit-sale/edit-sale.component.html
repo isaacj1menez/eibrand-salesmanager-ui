@@ -1,0 +1,458 @@
+<p-dialog header="Agregar Producto" [(visible)]="isNewProductVisible" [modal]="true" [draggable]="false"
+    [resizable]="false">
+    <div class="grid p-fluid">
+        <div class="col-12">
+            <div class="grid formgrid">
+                <div class="col-12 sm:col-6 ">
+                    <div class="field">
+                        <label>Nombre</label>
+                        <input pInputText type="text" [(ngModel)]="newProduct.nombre" #nombre="ngModel"
+                            autocomplete="off" />
+                    </div>
+                </div>
+                <div class="col-12 sm:col-6 ">
+                    <div class="field">
+                        <label>Precio</label>
+                        <p-inputNumber mode="decimal" [(ngModel)]="newProduct.precio" [min]="1" [minFractionDigits]="2"
+                            [maxFractionDigits]="2" autocomplete="off"></p-inputNumber>
+                    </div>
+                </div>
+            </div>
+            <div class="grid formgrid mt-2">
+                <div class="col-12 sm:col-6 mb-1">
+                    <p-button label="Cancelar" severity="secondary" (click)="closeNewProductDialog()"></p-button>
+                </div>
+                <div class="col-12 sm:col-6">
+                    <button pButton (click)="addNewProduct()" label="Guardar"
+                        [disabled]="!newProduct.nombre && newProduct.precio === 0"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</p-dialog>
+
+<p-dialog header="Diseño" [(visible)]="isPreviewVisible" [modal]="true" [draggable]="false" [resizable]="false"
+    [closable]="true">
+    <div class="col-12">
+        <div class="card">
+            <div class="flex justify-content-center">
+                <p-image [src]="preview" alt="Image" width="250" [preview]="true"></p-image>
+            </div>
+        </div>
+    </div>
+</p-dialog>
+
+<p-dialog header="Seleccionar Color y Talla" [(visible)]="isSizeVisiable" [closable]="false" [modal]="true"
+    [draggable]="false" [resizable]="false">
+    <div class="grid p-fluid">
+        <div class="col-12">
+            <div class="grid formgrid">
+                <div class="col-12">
+                    <div class="field">
+                        <label>Color y Talla</label>
+                        <p-dropdown #cmbTalla [options]="inventories" optionLabel="label" optionValue="value"
+                            [(ngModel)]="inventory" placeholder="Seleccionar..." [showClear]="true"
+                            (onChange)="onInventoryChange($event)" (onFocus)="getInventories()">
+                        </p-dropdown>
+                    </div>
+                </div>
+            </div>
+            <div class="grid formgrid mt-2">
+                <div class="col-6">
+                    <button pButton (click)="saveShirtSize()" label="Guardar" [disabled]="!inventory"></button>
+                </div>
+                <div class="col-6">
+                    <button pButton (click)="closeSizeDialog()" label="Cancelar"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</p-dialog>
+
+<p-dialog header="Cargos adicionales" [draggable]="false" [modal]="true" [(visible)]="isAdditionalChargesVisible">
+    <div class="grid formgrid mt-2">
+        <div class="col-12">
+            <label>Cargo por Diseños</label>
+            <div class="field flex mt-2">
+                <p-inputNumber mode="decimal" [(ngModel)]="sale.cargoDisenos" [min]="0" [minFractionDigits]="2"
+                    [maxFractionDigits]="2" autocomplete="off"></p-inputNumber>
+            </div>
+        </div>
+    </div>
+    <div class="grid formgrid mt-2">
+        <div class="col-12 sm:col-6">
+            <label>Descuento</label>
+            <div class="field flex gap-1 mt-2">
+                <p-inputNumber mode="decimal" [(ngModel)]="sale.descuento" [min]="0" autocomplete="off"
+                    [minFractionDigits]="2" [maxFractionDigits]="2"></p-inputNumber>
+                <p-dropdown [options]="['%', 'MXN']" [(ngModel)]="tipoDescuento"></p-dropdown>
+            </div>
+        </div>
+    </div>
+    <div class="grid formgrid mt-2">
+        <div class="col-12">
+            <label>Gastos de Envío</label>
+            <div class="field flex mt-2">
+                <p-inputNumber mode="decimal" [(ngModel)]="sale.envio" [min]="0" [minFractionDigits]="2"
+                    [maxFractionDigits]="2" autocomplete="off"></p-inputNumber>
+            </div>
+        </div>
+    </div>
+    <div class="grid formgrid mt-2">
+        <div class="col-12">
+            <label>Impuestos</label>
+            <div class="field flex mt-2">
+                <p-inputNumber mode="decimal" [(ngModel)]="sale.impuestos" [min]="0" [minFractionDigits]="2"
+                    [maxFractionDigits]="2" autocomplete="off"></p-inputNumber>
+            </div>
+        </div>
+    </div>
+    <div class="grid formgrid mt-2">
+        <div class="col-12">
+            <div class="flex justify-content-start gap-2">
+                <p-button label="Cancelar" severity="secondary" (click)="isAdditionalChargesVisible = false" />
+                <p-button label="Agregar" (click)="addAdditionalCharges()" />
+            </div>
+        </div>
+    </div>
+</p-dialog>
+
+<p-confirmDialog />
+
+<div class="grid" *ngIf="noSaleFound">
+    <div class="col-12 p-fluid">
+        <div class="card">
+            <h5>Órden no encontrada</h5>
+        </div>
+    </div>
+</div>
+
+<div class="grid" *ngIf="!noSaleFound">
+    <div class="col-12 p-fluid">
+        <div class="card">
+            <div class="grid formgrid">
+                <div class="col-12 sm:col-4">
+                    <h5>Editar Venta</h5>
+                    <h5 class="mt-2 lg:hidden">{{ sale.fecha | date: 'EEEE, dd MMMM yyyy' }}</h5>
+                    <p-dropdown [(ngModel)]="sale.status" [options]="statuses" [style]="{'min-width': '12rem'}">
+                        <ng-template let-option pTemplate="item">
+                            <span
+                                [class]="'customer-badge status-' + getStatusClass(option.class)">{{option.label}}</span>
+                        </ng-template>
+                    </p-dropdown>
+                </div>
+                <div class="col-12 sm:col-4">
+                </div>
+                <div class="col-12 sm:col-4 lg:flex lg:justify-content-end">
+                    <h5 class="hidden lg:block">{{ sale.fecha | date: 'EEEE, dd MMMM yyyy' }}</h5>
+                </div>
+            </div>
+            <div class="grid formgrid">
+                <div class="col-12">
+                    <p-messages [(value)]="messages" [enableService]="false" [closable]="false" />
+                </div>
+            </div>
+            <hr>
+            <div class="grid">
+                <div class="col-12 sm:col-3 ">
+                    <div class="field">
+                        <label>Nombre del Cliente</label>
+                        <input pInputText type="text" [(ngModel)]="sale.cliente.nombre" #nombre="ngModel"
+                            autocomplete="off" />
+                    </div>
+                </div>
+                <div class="col-12 sm:col-3 ">
+                    <div class="field">
+                        <label>Teléfono</label>
+                        <p-inputMask mask="(999) 999 9999" [(ngModel)]="sale.cliente.telefono" #telefono="ngModel" />
+                    </div>
+                </div>
+                <div class="col-12 sm:col-3 ">
+                    <div class="field">
+                        <label for="communicationChannel">Canal de Comunicación</label>
+                        <p-dropdown [options]="channels" [(ngModel)]="sale.cliente.canalComunicacion"
+                            placeholder="Seleccionar..." [showClear]="true"></p-dropdown>
+                    </div>
+                </div>
+                <div class="col-12 sm:col-3 ">
+                    <div class="field">
+                        <label>Fecha de Entrega</label>
+                        <p-calendar [(ngModel)]="sale.fechaEntrega" [showIcon]="true" inputId="icon"
+                            dateFormat="dd/mm/yy">
+                        </p-calendar>
+                    </div>
+                </div>
+            </div>
+            <div class="grid formgrid">
+                <div class="col-12 sm:col-4 ">
+                    <div class="field">
+                        <label>Producto</label>
+                        <p-multiSelect #multiSelect [options]="products" optionLabel="nombre"
+                            placeholder="Seleccionar Producto" (onChange)="addProduct($event)"
+                            [(ngModel)]="markedProducts">
+                            <ng-template let-product pTemplate="item">
+                                <div class="p-d-flex p-ai-center">
+                                    <div>{{product.nombre}}</div>
+                                </div>
+                                <div class="ml-1 p-d-flex p-ai-center">
+                                    <img [src]="product.imagen" alt="{{product.nombre}}" width="50"
+                                        style="margin-right: 10px;">
+                                </div>
+                            </ng-template>
+                        </p-multiSelect>
+                    </div>
+                </div>
+                <div class="col-12 sm:col-2 mt-1 lg:mt-4 mb-3">
+                    <button type="button" pButton label="Nuevo" (click)="showNewProductDialog()"
+                        icon="pi pi-plus"></button>
+                </div>
+            </div>
+            <div class="grid formgrid">
+                <div class="col-12 sm:col-12 ">
+                    <div class="field">
+                        <p-table #dt1 [value]="selectedProducts" styleClass="p-datatable-gridlines"
+                            responsiveLayout="scroll">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th style="min-width: 12rem">
+                                        <div class="flex justify-content-between align-items-center">
+                                            Nombre
+                                        </div>
+                                    </th>
+                                    <th style="min-width: 12rem">
+                                        <div class="flex justify-content-between align-items-center">
+                                            Precio
+                                        </div>
+                                    </th>
+                                    <th style="min-width: 14rem">
+                                        <div class="flex justify-content-between align-items-center">
+                                            Subtotal
+                                        </div>
+                                    </th>
+                                    <th style="min-width: 10rem">
+                                        <div class="flex justify-content-between align-items-center">
+                                            Cantidad
+                                        </div>
+                                    </th>
+                                    <th style="min-width: 10rem">
+                                        <div class="flex justify-content-between align-items-center">
+                                            Talla
+                                        </div>
+                                    </th>
+                                    <th style="min-width: 10rem">
+                                        <div class="flex justify-content-between align-items-center">
+                                            Diseño
+                                        </div>
+                                    </th>
+                                    <th style="min-width: 10rem">
+                                        <div class="flex justify-content-between align-items-center">
+                                            Acciones
+                                        </div>
+                                    </th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-product let-i="rowIndex">
+                                <tr>
+                                    <td>{{ product.nombre }}</td>
+                                    <td>{{ product.precio | currency: 'MXN' }}</td>
+                                    <td>{{ product.subtotal | currency: 'MXN' }}</td>
+                                    <td>
+                                        <p-inputNumber mode="decimal" [(ngModel)]="product.cantidad"
+                                            [showButtons]="true" [min]="1"
+                                            (ngModelChange)="updateTotal(product)"></p-inputNumber>
+                                    </td>
+                                    <td>
+                                        {{ product.talla }}
+                                    </td>
+                                    <td>
+                                        <p-fileUpload #productImageList mode="basic" chooseLabel=" "
+                                            chooseIcon="pi pi-plus" accept="image/*"
+                                            (onSelect)="addDesign($event, product)" />
+                                    </td>
+                                    <td>
+                                        <div class="flex flex-wrap gap-2">
+                                            <button pButton [disabled]="isResetEnable" pRipple type="button"
+                                                icon="pi pi-times"
+                                                class="p-button-rounded p-button-danger p-button-text"
+                                                (click)="removeProduct(i, product)"></button>
+                                            <button [disabled]="isResetEnable" pButton pRipple type="button"
+                                                icon="pi pi-refresh"
+                                                class="p-button-rounded p-button-text p-button-plain"
+                                                (click)="clearFile(i, product)"></button>
+                                            <button *ngIf="product.diseno" [disabled]="isResetEnable" pButton pRipple type="button"
+                                                icon="pi pi-eye"
+                                                class="p-button-rounded p-button-text p-button-plain"
+                                                (click)="showPreviewDialog(i, product)"></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="emptymessage">
+                                <tr>
+                                    <td colspan="8">Sin productos</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                    </div>
+                </div>
+            </div>
+            <div class="grid">
+                <div class="col-12 sm:col-4">
+                    <div class="card h-28rem">
+                        <h5>Resumen</h5>
+                        <hr>
+                        <div class="field">
+                            <label class="font-bold">Subtotal:</label><span> {{ subtotal | currency: 'MXN' }}</span>
+                        </div>
+                        <div class="field">
+                            <label class="font-bold">Cargos por Diseños:</label><span> {{ sale.cargoDisenos| currency:
+                                'MXN'
+                                }}</span>
+                        </div>
+                        <div class="field">
+                            <label class="font-bold">Gastos de envío:</label><span> {{ sale.envio| currency: 'MXN'
+                                }}</span>
+                        </div>
+                        <div class="field">
+                            <label class="font-bold">Impuestos:</label><span> {{ sale.impuestos | currency: 'MXN'
+                                }}</span>
+                        </div>
+                        <div class="field">
+                            <label class="font-bold">Descuento:</label><span> {{ sale.descuento }}%</span>
+                        </div>
+                        <p><a style="cursor: pointer;" (click)="showAdditionalChargesDialog()">Agregar cargos
+                                adicionales</a></p>
+                        <hr>
+                        <div class="field">
+                            <label class="font-bold">Total:</label><span> {{ sale.total| currency: 'MXN' }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 sm:col-4 ">
+                    <div class="card h-28rem">
+                        <h5>Información de Pago</h5>
+                        <hr>
+                        <div class="field">
+                            <label>Método de pago</label>
+                            <p-dropdown [options]="paymentMethods" [(ngModel)]="sale.metodoPago"
+                                placeholder="Seleccionar..." [showClear]="true"></p-dropdown>
+                        </div>
+                        <div class="field">
+                            <label>Anticipo</label>
+                            <p-inputNumber mode="decimal" [(ngModel)]="sale.anticipo" [min]="0" [minFractionDigits]="2"
+                                [maxFractionDigits]="2" autocomplete="off"
+                                (ngModelChange)="setRemaning()"></p-inputNumber>
+                        </div>
+                        <hr>
+                        <div class="field">
+                            <label class="font-bold">Restante:</label><span> {{ sale.total - sale.anticipo | currency:
+                                'MXN' }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 sm:col-4">
+                    <div class="card h-28rem">
+                        <h5>Datos de envío</h5>
+                        <hr>
+                        <!-- <div class="field">
+                            <label>Dirección</label>
+                            <input pInputText id="code" type="text" [(ngModel)]="sale.cliente.direccion.direccion"
+                                autocomplete="off" />
+                        </div> -->
+                        <div class="field">
+                            <label>Código Postal</label>
+                            <p-inputMask mask="99999" [(ngModel)]="sale.cliente.direccion.codigoPostal"
+                                #codigoPostal="ngModel" />
+                        </div>
+                        <div class="field">
+                            <div class="div">
+                                <p><a style="cursor: pointer;" href="https://www.manuable.com/quotes/new" target="_blank">Cotizar Envío</a></p>
+                            </div>
+                        </div>
+                        <!-- <div class="field">
+                            <label for="state">Estado</label>
+                            <p-dropdown [options]="states" [(ngModel)]="sale.cliente.direccion.estado"
+                                placeholder="Seleccionar..." [showClear]="true"></p-dropdown>
+                        </div> -->
+                        <div class="field">
+                            <label>Guía</label>
+                            <input pInputText type="text" [(ngModel)]="sale.guiaEnvio" #nombre="ngModel"
+                                autocomplete="off" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="grid">
+                <div class="col-12 sm:col-8">
+                    <div class="card h-21rem">
+                        <h5>Observaciones / Comentarios</h5>
+                        <hr>
+                        <div class="field">
+                            <textarea rows="10" pInputTextarea [(ngModel)]="sale.observaciones"
+                                name="descripcion"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 sm:col-4">
+                    <div class="card h-21rem">
+                        <h5>Adicionales</h5>
+                        <hr>
+                        <div class="field">
+                            <label>Punto de Entrega</label>
+                            <input pInputText type="text" [(ngModel)]="sale.puntoEntrega" #nombre="ngModel"
+                                autocomplete="off" />
+                        </div>
+                        <div class="field">
+                            <label>Colaborador</label>
+                            <p-dropdown #cmbTalla [options]="collaborators" optionLabel="nombreCompleto"
+                                optionValue="nombreCompleto" [(ngModel)]="sale.vendedor" placeholder="Seleccionar..."
+                                [showClear]="true">
+                            </p-dropdown>
+                        </div>
+                        <div class="field">
+                            <p-checkbox [(ngModel)]="sale.urgente" [binary]="true" label="Venta Express" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 sm:col-6">
+                    <div>
+                        <h5>Resultado</h5>
+                        <div class="field">
+                            <p-fileUpload #productImage chooseLabel="Agregar" [showUploadButton]="false"
+                                cancelLabel="Cancelar" name="image" (onSelect)="onFileSelect($event)" [multiple]="false"
+                                accept="image/*"></p-fileUpload>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 sm:col-6">
+                    <div>
+                        <div class="field">
+                            <p-image *ngIf="sale.resultado" [src]="sale.resultado" alt="Image" width="250" />
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="col-12 sm:col-4">
+                    <div class="card h-21rem">
+                        <h5>Comprobante</h5>
+                        <hr>
+                        <div class="field">
+                            <p-fileUpload #productImage chooseLabel="Agregar" [showUploadButton]="false"
+                                cancelLabel="Cancelar" name="image" (onSelect)="onComprobanteSelect($event)"
+                                [multiple]="false" accept="image/*"></p-fileUpload>
+                        </div>
+                    </div>
+                </div> -->
+            </div>
+            <div class="flex justify-content-end flex-wrap">
+                <div class="col-12 sm:col-6">
+                    <p-button label="Cancelar" (click)="cancelEdit()" [disabled]="isResetEnable"
+                        class="mt-2"></p-button>
+                </div>
+                <div class="col-12 sm:col-6">
+                    <p-button label="Guardar Venta" (click)="updateSale($event)" [disabled]="isResetEnable"
+                        [outlined]="true" class="mt-2"></p-button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

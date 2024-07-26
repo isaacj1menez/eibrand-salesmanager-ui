@@ -1,0 +1,88 @@
+<div class="grid p-fluid">
+    <div class="col-12 lg:col-5">
+        <div class="card">
+            <h5>Nuevo Producto</h5>
+            <form #productForm="ngForm" (ngSubmit)="createProduct(productForm)">
+                <div class="grid formgrid">
+                    <div class="col-12 sm:col-12 lg:mb-0">
+                        <div class="field">
+                            <label htmlFor="name">Nombre</label>
+                            <input pInputText id="name" type="text" [(ngModel)]="product.nombre" name="nombre"
+                                #nombre="ngModel" required autocomplete="off" />
+                            <div *ngIf="(productForm.submitted && product.nombre === '') || (nombre.invalid && nombre.touched)"
+                                class="text-red-500 mt-1">El nombre es requerido</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid formgrid">
+                    <div class="col-12 sm:col-12 lg:mb-0">
+                        <div class="field">
+                            <label htmlFor="description">Descripción</label>
+                            <textarea rows="5" cols="30" pInputTextarea [(ngModel)]="product.descripcion"
+                                name="descripcion"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid formgrid">
+                    <div class="col-12 sm:col-6 lg:mb-0">
+                        <div class="field">
+                            <label htmlFor="category">Categoría Base</label>
+                            <p-dropdown [options]="stockCategories" [(ngModel)]="product.categoriaBase" name="categoria"
+                                placeholder="Seleccionar..." [showClear]="true" optionLabel="label" optionValue="value" required></p-dropdown>
+                            <div *ngIf="productForm.submitted && !product.categoriaBase" class="text-red-500 mt-1">Debe
+                                seleccionar una
+                                categoría base</div>
+                        </div>
+                    </div>
+                    <div class="col-12 sm:col-6 lg:mb-0">
+                        <div class="field">
+                            <label htmlFor="category">Categoría</label>
+                            <p-dropdown [options]="categorias" [(ngModel)]="product.categoria" name="categoria"
+                                placeholder="Seleccionar..." [showClear]="true" required></p-dropdown>
+                            <div *ngIf="productForm.submitted && !product.categoria" class="text-red-500 mt-1">Debe
+                                seleccionar una
+                                categoría</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid formgrid">
+                    <div class="col-12 sm:col-6 lg:mb-0">
+                        <div class="field">
+                            <label htmlFor="price">Precio</label>
+                            <p-inputNumber mode="decimal" [(ngModel)]="product.precio" name="precio" [min]="1"
+                                [minFractionDigits]="2" [maxFractionDigits]="2" autocomplete="off"
+                                required></p-inputNumber>
+                            <div *ngIf="productForm.submitted && (!product.precio || product.precio <= 0)"
+                                class="text-red-500 mt-1">El precio debe ser mayor a cero</div>
+                        </div>
+                    </div>
+                    <div class="col-12 sm:col-6 lg:mb-0">
+                        <div class="field">
+                            <label htmlFor="code">Código</label>
+                            <input pInputText id="code" type="text" [(ngModel)]="product.codigo" name="codigo"
+                                autocomplete="off" />
+                        </div>
+                    </div>
+                </div>
+                <div class="grid formgrid">
+                    <div class="col-12 sm:col-12 lg:mb-0">
+                        <h5>Imagen</h5>
+                        <p-fileUpload #productImage chooseLabel="Agregar" [showUploadButton]="false"
+                            cancelLabel="Cancelar" name="image" (onSelect)="onFileSelect($event)" [multiple]="false"
+                            accept="image/*"></p-fileUpload>
+                    </div>
+                </div>
+                <div class="grid formgrid">
+                    <div class="col-12 sm:col-4 lg:mb-0 align-items-end mt-3">
+                        <button pButton type="submit" [disabled]="uploading" label="Registrar"></button>
+                    </div>
+                </div>
+                <div class="grid formgrid">
+                    <div class="col-12 sm:col-12 lg:mb-0 mt-3">
+                        <p-messages [value]="errorMessages"></p-messages>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

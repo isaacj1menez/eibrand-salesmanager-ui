@@ -1,0 +1,24 @@
+<p-dialog header="Agregar Producto" [modal]="true" [draggable]="false"
+    [resizable]="false">
+    <div class="grid p-fluid">
+        <div class="col-12">
+            <div class="grid formgrid">
+                <div class="col-12 sm:col-6 lg:mb-0">
+                    <div class="field">
+                        <label htmlFor="price">Precio</label>
+                        <p-inputNumber mode="decimal" name="precio" [min]="1"
+                            [minFractionDigits]="2" [maxFractionDigits]="2" autocomplete="off" required></p-inputNumber>
+                    </div>
+                </div>
+            </div>
+            <div class="grid formgrid mt-2">
+                <div class="col-12 sm:col-6 mb-1">
+                    <p-button label="Cancelar" severity="secondary"></p-button>
+                </div>
+                <div class="col-12 sm:col-6">
+                    <button pButton label="Guardar"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</p-dialog>

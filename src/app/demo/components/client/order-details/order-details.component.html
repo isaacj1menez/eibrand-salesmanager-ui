@@ -1,0 +1,78 @@
+<div class="surface-section min-h-screen flex flex-column">
+    <p-toast></p-toast>
+    <p-menubar>
+        <ng-template pTemplate="start">
+            <img src="assets/layout/images/logo-color.svg" height="40" class="mr-2">
+        </ng-template>
+        <ng-template pTemplate="end">
+            <a href="https://wa.me/5212201927912" target="_blank" class="p-2 text-yellow-500"><i
+                    class="pi pi-whatsapp text-2xl"></i></a>
+            <a href="https://www.instagram.com/ei.brandmx/" target="_blank" class="p-2 text-yellow-500"><i
+                    class="pi pi-instagram text-2xl"></i></a>
+            <a href="https://www.facebook.com/urtshirt.mx" target="_blank" class="p-2 text-yellow-500"><i
+                    class="pi pi-facebook text-2xl"></i></a>
+        </ng-template>
+    </p-menubar>
+
+    <div class="flex-grow-1 flex justify-content-center align-items-center">
+        <div class="grid ml-2 mr-2 lg:ml-8 lg:mr-8 p-1 lg:p-8 w-full">
+            <div class="col-12 lg:col-6 flex justify-content-center align-items-center">
+                <div
+                    class="card text-center p-4 surface-ground shadow-2 border-round h-full w-full flex flex-column justify-content-center">
+                    <h4 class="text-yellow-500 text-3xl lg:text-6xl" style="font-family: 'Arial', sans-serif;">¡Ei, {{
+                        sale.cliente.nombre }}!</h4>
+                    <p class="text-xl lg:text-3xl" style="font-family: 'Arial', sans-serif;">Nos encontramos preparando tu orden,
+                        te pedimos paciencia.</p>
+                    <p class="text-xl lg:text-3xl" style="font-family: 'Arial', sans-serif;">Si tienes alguna duda, no dudes en
+                        contactarnos.</p>
+                </div>
+            </div>
+            <div class="col-12 lg:col-6 flex justify-content-center align-items-center">
+                <div class="card p-4 surface-ground shadow-2 border-round h-full w-full">
+                    <h4 class="text-yellow-500">Detalles de Compra</h4>
+                    <h6 class="mb-3">Tu pedido se encuentra en estatus:
+                        <span [class]="'customer-badge status-' + getStatusClass(sale.status)">
+                            {{ sale.status }}
+                        </span>
+                    </h6>
+                    <div *ngIf="sale.resultado" class="div mb-3 text-success font-bold">
+                        Producto Finalizado
+                    </div>
+                    <p-image *ngIf="sale.resultado" [src]="sale.resultado" [alt]="sale._id" width="100"
+                        class="shadow-4 border-round mb-3" [preview]="true"></p-image>
+                    <hr>
+                    <h6>Nombre: <span class="font-bold">{{ sale.cliente.nombre }}</span></h6>
+                    <h6>Total: <span class="font-bold">{{ sale.total | currency: 'MXN' }}</span></h6>
+                    <h6>Por pagar: <span class="font-bold">{{ sale.restante | currency: 'MXN' }}</span></h6>
+                    <h6 *ngIf="sale.guiaEnvio">Guía:
+                        <span>
+                            <a [href]="sale.guiaEnvio" target="_blank" class="text-yellow-500">Ver Guía</a>
+                        </span>
+                    </h6>
+                    <h5 class="mt-4 text-yellow-500">Productos</h5>
+                    <hr>
+                    <div class="grid">
+                        <div class="col-6 md:col-4 lg:col-4" *ngFor="let product of sale.productos">
+                            <div class="card m-1 p-2 border-1 surface-border shadow-1 border-round">
+                                <div class="flex flex-column align-items-center text-center">
+                                    <img *ngIf="product.diseno" [src]="product.diseno" [alt]="product.nombre"
+                                        class="w-10 shadow-2 border-round mb-3" />
+                                    <div>{{ product.nombre }}</div>
+                                    <div class="mb-2">{{ product.descripcion }}</div>
+                                    <div class="flex align-items-center justify-content-between w-full">
+                                        <span>${{ product.precio }}</span>
+                                        <span>x{{ product.cantidad }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="surface-footer p-4 text-center mt-auto w-full">
+        <p class="text-sm">© 2024 EiBrand. Todos los derechos reservados.</p>
+    </footer>
+</div>
