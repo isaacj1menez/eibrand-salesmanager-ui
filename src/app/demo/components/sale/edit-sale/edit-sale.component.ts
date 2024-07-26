@@ -335,7 +335,7 @@ export class EditSaleComponent implements OnInit {
           if (addSaleResponse.success) {
             this.resetComponents();
             this.messages = [];
-            this.router.navigate(['ventas/ordenes']);
+            this.router.navigate(['/management/ventas/ordenes']);
           } else {
             this.messages = [];
             if (Array.isArray(addSaleResponse.errors)) {
@@ -353,7 +353,7 @@ export class EditSaleComponent implements OnInit {
   }
 
   cancelEdit() {
-    this.router.navigate(['ventas/ordenes']);
+    this.router.navigate(['/management/ventas/ordenes']);
   }
 
   validateSale(): boolean {
