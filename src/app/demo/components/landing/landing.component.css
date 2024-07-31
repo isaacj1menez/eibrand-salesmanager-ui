@@ -72,7 +72,7 @@ span {
 
 .image {
     width: 595px;
-    height: 500px;
+    height: 700px;
     object-fit: cover;
     transition: transform 0.3s ease-in-out;
     border-radius: 10px;
