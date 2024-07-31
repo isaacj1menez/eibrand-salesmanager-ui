@@ -35,6 +35,6 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
     MessagesModule,
     ConfirmDialogModule
   ],
-  declarations: [ AddProductComponent ],
+  declarations: [ AddProductComponent ]
 })
 export class AddProductModule { }

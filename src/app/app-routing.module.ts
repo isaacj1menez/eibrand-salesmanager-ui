@@ -20,6 +20,9 @@ import { LandingComponent } from './demo/components/landing/landing.component';
             },
             { path: 'auth', loadChildren: () => import('./demo/components/auth/auth.module').then(m => m.AuthModule) },
             { path: 'client', loadChildren: () => import('./demo/components/client/client.module').then(m => m.ClientModule) },
+            { path: 'terminos', loadChildren: () => import('./demo/components/landing/terminos/terminos.module').then(m => m.TerminosModule) },
+            { path: 'privacidad', loadChildren: () => import('./demo/components/landing/privacidad/privacidad.module').then(m => m.PrivacidadModule) },
+            { path: 'devoluciones', loadChildren: () => import('./demo/components/landing/devoluciones/devoluciones.module').then(m => m.DevolucionesModule) },
             { path: 'notfound', component: NotfoundComponent },
             { path: '**', redirectTo: '/notfound' },
         ], { scrollPositionRestoration: 'enabled', anchorScrolling: 'enabled', onSameUrlNavigation: 'reload' })
