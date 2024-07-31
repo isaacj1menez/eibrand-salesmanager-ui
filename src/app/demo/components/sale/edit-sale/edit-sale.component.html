@@ -42,15 +42,15 @@
     </div>
 </p-dialog>
 
-<p-dialog header="Seleccionar Color y Talla" [(visible)]="isSizeVisiable" [closable]="false" [modal]="true"
-    [draggable]="false" [resizable]="false">
+<p-dialog header="Seleccionar Categoria Base" [(visible)]="isSizeVisiable" [closable]="false" [modal]="true"
+    [draggable]="false" [resizable]="false"   [style]="{ height: '500px', width: '400px' }" >
     <div class="grid p-fluid">
         <div class="col-12">
             <div class="grid formgrid">
                 <div class="col-12">
                     <div class="field">
-                        <label>Color y Talla</label>
-                        <p-dropdown #cmbTalla [options]="inventories" optionLabel="label" optionValue="value"
+                        <label>Categoria Base</label>
+                        <p-dropdown #cmbTalla [options]="filteredInventories" optionLabel="label" optionValue="value"
                             [(ngModel)]="inventory" placeholder="Seleccionar..." [showClear]="true"
                             (onChange)="onInventoryChange($event)" (onFocus)="getInventories()">
                         </p-dropdown>
@@ -59,10 +59,10 @@
             </div>
             <div class="grid formgrid mt-2">
                 <div class="col-6">
-                    <button pButton (click)="saveShirtSize()" label="Guardar" [disabled]="!inventory"></button>
+                    <button pButton (click)="closeSizeDialog()" label="Cancelar"></button>
                 </div>
                 <div class="col-6">
-                    <button pButton (click)="closeSizeDialog()" label="Cancelar"></button>
+                    <button pButton (click)="saveShirtSize()" label="Guardar" [disabled]="!inventory"></button>
                 </div>
             </div>
         </div>
@@ -236,7 +236,7 @@
                                     </th>
                                     <th style="min-width: 10rem">
                                         <div class="flex justify-content-between align-items-center">
-                                            Talla
+                                            Tipo
                                         </div>
                                     </th>
                                     <th style="min-width: 10rem">
@@ -262,7 +262,7 @@
                                             (ngModelChange)="updateTotal(product)"></p-inputNumber>
                                     </td>
                                     <td>
-                                        {{ product.talla }}
+                                        {{ product.categoria }}
                                     </td>
                                     <td>
                                         <p-fileUpload #productImageList mode="basic" chooseLabel=" "

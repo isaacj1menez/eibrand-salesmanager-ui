@@ -2,7 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Table } from 'primeng/table';
 import { Sale } from 'src/app/demo/interfaces/responses/addSaleResponseInterface';
-import { GetSalesResponseInterface, Sale as resopnseSale } from 'src/app/demo/interfaces/responses/getSalesResponseInterface';
+import { GetSalesResponseInterface, Sale as responseSale } from 'src/app/demo/interfaces/responses/getSalesResponseInterface';
 import { SalesService } from 'src/app/demo/service/sale.service';
 
 @Component({
@@ -80,48 +80,53 @@ export class OrdersComponent implements OnInit {
     return arr.map(item => item.nombre).join(' - ');
   }
 
-  viewSale(sale: resopnseSale) {
+  viewSale(sale: responseSale) {
     this.router.navigate(['/management/ventas/editar/', sale._id]);
   }
 
-  printSale(sale: resopnseSale) {
+  printSale(sale: responseSale) {
     this.sale = sale;
 
+    // Reemplaza saltos de línea con <br> para las observaciones
+    const observaciones = this.sale.observaciones.replace(/\n/g, '<br>');
+
     const printContent = `
-      <div class="ticket">
-        <h2>PEDIDO</h2>
-        <hr>
-        <div class="info">
-          <p><strong>Cliente:</strong> ${this.sale.cliente.nombre}</p>
+        <div class="ticket">
+            <h2>PEDIDO</h2>
+            <hr>
+            <div class="info">
+                <p><strong>Cliente:</strong> ${this.sale.cliente.nombre}</p>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Cantidad</th>
+                        <th>Producto</th>
+                        <th>Precio</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${this.sale.productos.map(producto => `
+                        <tr>
+                            <td>${producto.cantidad}</td>
+                            <td>${producto.nombre}</td>
+                            <td>${producto.precio}</td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            </table>
+            <div class="total">
+                <p><strong>Total:</strong> ${this.sale.total}</p>
+                <p><strong>Restante:</strong> ${this.sale.restante}</p>
+            </div>
+            <hr>
+            <div class="footer">
+                <p><strong>Observaciones Extra:</strong></p>
+                <p>${observaciones}</p>
+            </div>
         </div>
-        <table>
-          <thead>
-            <tr>
-              <th>Cantidad</th>
-              <th>Producto</th>
-              <th>Precio</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${this.sale.productos.map(producto => `
-              <tr>
-                <td>${producto.cantidad}</td>
-                <td>${producto.nombre}</td>
-                <td>${producto.precio}</td>
-              </tr>
-            `).join('')}
-          </tbody>
-        </table>
-        <div class="total">
-          <p><strong>Total:</strong> ${this.sale.total}</p>
-          <p><strong>Restante:</strong> ${this.sale.restante}</p>
-        </div>
-        <hr>
-        <div class="footer">
-          <p><strong>Observaciones Extra:</strong></p>
-        </div>
-      </div>
     `;
+
     const WindowPrt = window.open('', '', '');
     WindowPrt.document.write('<html><title>Nota</title><head>');
     WindowPrt.document.write('<style>');
@@ -142,7 +147,6 @@ export class OrdersComponent implements OnInit {
     WindowPrt.focus();
     WindowPrt.print();
     WindowPrt.close();
-
   }
 
 }

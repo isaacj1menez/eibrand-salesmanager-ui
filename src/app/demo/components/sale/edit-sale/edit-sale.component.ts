@@ -74,6 +74,9 @@ export class EditSaleComponent implements OnInit {
   // Inventarios Registrados
   inventories: InventoryItem[] = [];
 
+  // Inventarios Registrados
+  filteredInventories: InventoryItem[] = [];
+
   // Interfaz de product response
   productResponse: GetProductsResponseInterface;
 
@@ -166,6 +169,8 @@ export class EditSaleComponent implements OnInit {
 
   // Para cambiar los status
   preview: string = '';
+
+  categoriaBase: string = '';
 
   constructor(private productService: ProductService,
     private saleService: SalesService,
@@ -304,9 +309,11 @@ export class EditSaleComponent implements OnInit {
       .filter(item => item.stock > 0)
       .map(item => ({
         ...item,
-        label: `${item.nombre} - ${item.color} - ${item.talla}`,
+        label: item.talla ? `${item.nombre} - ${item.color} - ${item.talla}` : `${item.nombre} - ${item.color}`,
         value: item._id
-      }));
+      }));      
+
+      this.filteredInventories = this.inventories.filter(i => i.categoria.toLocaleLowerCase() === this.categoriaBase.toLocaleLowerCase());
   }
 
   async updateSale(event: Event) {
@@ -439,6 +446,7 @@ export class EditSaleComponent implements OnInit {
     event.value.forEach((product: Product) => {
       if (product.categoria === "Textiles" && !this.selectedProducts.some(sp => sp.id === product._id)) {
         this.isSizeVisiable = true;
+        this.categoriaBase = product.categoriaBase;
       }
       if (!this.selectedProducts.some(sp => sp.id === product._id)) {
         const selectedProduct: SaleProduct = {
@@ -562,7 +570,7 @@ export class EditSaleComponent implements OnInit {
     this.sale.restante = this.sale.total - this.sale.anticipo;
   }
 
-  onInventoryChange(event) {
+   onInventoryChange(event) {
     const product: SaleProduct = this.selectedProducts[this.selectedProducts.length - 1];
     product.inventario = this.inventory;
     product.categoria = event.originalEvent.srcElement.innerText;
@@ -601,12 +609,14 @@ export class EditSaleComponent implements OnInit {
     this.cmbTalla.selectedOption = '';
     this.inventory = '';
     this.isSizeVisiable = false;
+    this.categoriaBase = '';
   }
 
   saveShirtSize() {
     this.cmbTalla.selectedOption = '';
     this.inventory = '';
     this.isSizeVisiable = false;
+    this.categoriaBase = '';
   }
 
   showNewProductDialog() {

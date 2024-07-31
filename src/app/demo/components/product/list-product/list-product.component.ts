@@ -59,6 +59,10 @@ export class ListProductComponent implements OnInit {
     private fileUploadService: FileUploadService) { }
 
   async ngOnInit() {
+    await this.getStockCount();
+  }
+
+  async getStockCount() {
     let groupedItems = {};
     this.response = await this.productService.getAllProducts();
     this.products = this.response.success ? this.response.products : [];
@@ -75,12 +79,13 @@ export class ListProductComponent implements OnInit {
     } else {
       this.inventories = [];
     }
-        
+
     this.products.map(product => {
       const category = groupedItems[product.categoriaBase] || 0;
       product.stock = category.stock;
     });
   }
+
   getStatus(product: Product) {
     if (product.stock > 5) {
       return 'success'
@@ -146,6 +151,7 @@ export class ListProductComponent implements OnInit {
             this.messageService.add({ severity: 'success', summary: 'Info', detail: 'Producto Actualizado' });
             this.uploading = false;
             this.isEditVisible = false;
+            await this.getStockCount();
           }
         }
       }
