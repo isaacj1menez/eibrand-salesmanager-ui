@@ -112,6 +112,8 @@ span {
     position: relative;
     background-color: var(--color4);
     padding: 12px 20px;
+    margin-top: 50px;
+    /* Ajusta este valor si cambias la altura del banner */
 }
 
 ul {
@@ -161,7 +163,7 @@ ul {
     position: absolute;
     color: var(--color1);
     cursor: pointer;
-    font-size: 1.5rem;
+    font-size: 2rem;
     display: none;
 }
 
@@ -172,12 +174,28 @@ ul {
 }
 
 .close-menu {
-    top: 20px;
+    top: 50px;
     right: 20px;
 }
 
 #check {
     display: none;
+}
+
+.banner {
+    width: 100%;
+    background-color: var(--color2);
+    color: var(--color1);
+    text-align: center;
+    padding: 10px 0;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 101;
+    /* Ensure it is above other elements */
 }
 
 @media (max-width: 610px) {
@@ -211,7 +229,14 @@ ul {
     #check:checked~.menu {
         right: 0;
     }
+
+    .banner {
+        position: fixed;
+        top: 0;
+        left: 0;
+    }
 }
+
 
 article {
     --img-scale: 1.001;
